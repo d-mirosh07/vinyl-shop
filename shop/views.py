@@ -75,6 +75,18 @@ class ArtistDetailView(APIView):
 class AlbumListView(APIView):
     def get(self, request):
         albums = Album.objects.all()
+
+        search = request.query_params.get("search")
+        artist_id = request.query_params.get("artist_id")
+        genre_id = request.query_params.get("genre_id")
+
+        if search:
+            albums = albums.filter(title__icontains=search)
+        if artist_id:
+            albums = albums.filter(artist_id=artist_id)
+        if genre_id:
+            albums = albums.filter(genre_id=genre_id)
+
         serializer = AlbumSerializer(albums, many=True)
         return Response(serializer.data)
 
