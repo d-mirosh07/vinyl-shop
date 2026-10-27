@@ -1,0 +1,422 @@
+{
+  "info": {
+    "_postman_id": "d2929fc9-e44f-453d-abc4-8ef2b49f8793",
+    "name": "Vinyl Shop",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "59232347",
+    "_collection_link": "https://go.postman.co/collection/59232347-d2929fc9-e44f-453d-abc4-8ef2b49f8793?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Create artist",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "   {\"name\": \"Michael Jackson\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/artists/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List artists",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/artists/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get artist",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/artists/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update artist",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Michael J. Jackson\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/artists/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create genre",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Pop\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/genres/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "genres",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List genres",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/genres/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "genres",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create album",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Thriller\", \"price\": \"899.00\", \"in_stock\": true, \"artist\": 1, \"genre\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List albums",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get album",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/albums/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update album",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"price\": \"799.00\", \"in_stock\": false}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/albums/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create artist, empty data",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/artists/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get artist, not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/artists/999/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            "999",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create album, invalid data",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"No price\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create album, unknown artist",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"X\", \"price\": \"10.00\", \"in_stock\": true, \"artist\": 999, \"genre\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get album, not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/albums/999/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            "999",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete artist with albums",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/artists/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete album",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/albums/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "albums",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete artist",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/artists/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
