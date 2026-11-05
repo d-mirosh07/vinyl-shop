@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -7,6 +8,8 @@ from .serializers import AlbumSerializer, ArtistSerializer, GenreSerializer
 
 
 class ArtistListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         artists = Artist.objects.all()
         serializer = ArtistSerializer(artists, many=True)
@@ -21,6 +24,8 @@ class ArtistListView(APIView):
 
 
 class GenreListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         genres = Genre.objects.all()
         serializer = GenreSerializer(genres, many=True)
@@ -35,6 +40,8 @@ class GenreListView(APIView):
 
 
 class ArtistDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request, pk):
         try:
             artist = Artist.objects.get(pk=pk)
@@ -73,8 +80,22 @@ class ArtistDetailView(APIView):
 
 
 class AlbumListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         albums = Album.objects.all()
+
+        search = request.query_params.get("search")
+        artist_id = request.query_params.get("artist_id")
+        genre_id = request.query_params.get("genre_id")
+
+        if search:
+            albums = albums.filter(title__icontains=search)
+        if artist_id:
+            albums = albums.filter(artist_id=artist_id)
+        if genre_id:
+            albums = albums.filter(genre_id=genre_id)
+
         serializer = AlbumSerializer(albums, many=True)
         return Response(serializer.data)
 
@@ -87,6 +108,8 @@ class AlbumListView(APIView):
 
 
 class AlbumDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request, pk):
         try:
             album = Album.objects.get(pk=pk)
