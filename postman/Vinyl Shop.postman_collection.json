@@ -538,7 +538,6 @@
             "artists",
             "999",
             ""
-
           ]
         }
       },
@@ -733,6 +732,103 @@
             "api",
             "artists",
             "2",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Wishlist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/wishlist/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "wishlist",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add to Wishlist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"album\": 3\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/wishlist/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "wishlist",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Remove from Wishlist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/wishlist/3/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "wishlist",
+            "3",
             ""
           ]
         }
