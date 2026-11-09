@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -24,3 +25,22 @@ class Album(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="wishlist",
+    )
+    album = models.ForeignKey(
+        Album,
+        on_delete=models.CASCADE,
+        related_name="wishlisted",
+    )
+
+    class Meta:
+        unique_together = ("user", "album")
+
+    def __str__(self):
+        return f"{self.user} - {self.album}"
