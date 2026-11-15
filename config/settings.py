@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "shop",
     "users",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -145,9 +146,18 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Vinyl Shop API",
+    "DESCRIPTION": "API магазину вінілових платівок. Захищені ендпоінти потребують "
+    "заголовок Authorization: Bearer <access токен>.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
