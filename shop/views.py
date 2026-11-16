@@ -1,3 +1,5 @@
+import logging
+
 from drf_spectacular.utils import (
     OpenApiExample,
     OpenApiParameter,
@@ -12,6 +14,8 @@ from rest_framework.views import APIView
 from .models import Album, Artist, Genre, Wishlist
 from .serializers import AlbumSerializer, ArtistSerializer, GenreSerializer
 
+logger = logging.getLogger(__name__)
+
 
 class ArtistListView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -24,8 +28,12 @@ class ArtistListView(APIView):
     def post(self, request):
         serializer = ArtistSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            artist = serializer.save()
+            logger.info(f"Artist created: id={artist.id}")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        logger.warning(
+            f"Artist creation rejected: invalid fields {list(serializer.errors.keys())}"
+        )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -40,8 +48,12 @@ class GenreListView(APIView):
     def post(self, request):
         serializer = GenreSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            genre = serializer.save()
+            logger.info(f"Genre created: id={genre.id}")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        logger.warning(
+            f"Genre creation rejected: invalid fields {list(serializer.errors.keys())}"
+        )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -52,6 +64,7 @@ class ArtistDetailView(APIView):
         try:
             artist = Artist.objects.get(pk=pk)
         except Artist.DoesNotExist:
+            logger.warning(f"Artist not found: id={pk}")
             return Response({"error": "Виконавця не знайдено"}, status=404)
 
         serializer = ArtistSerializer(artist)
@@ -61,27 +74,37 @@ class ArtistDetailView(APIView):
         try:
             artist = Artist.objects.get(pk=pk)
         except Artist.DoesNotExist:
+            logger.warning(f"Artist not found for update: id={pk}")
             return Response({"error": "Виконавця не знайдено"}, status=404)
 
         serializer = ArtistSerializer(artist, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            logger.info(f"Artist updated: id={pk}")
             return Response(serializer.data)
+        logger.warning(
+            f"Artist update rejected: id={pk}, invalid fields {list(serializer.errors.keys())}"
+        )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         try:
             artist = Artist.objects.get(pk=pk)
         except Artist.DoesNotExist:
+            logger.warning(f"Artist not found for deletion: id={pk}")
             return Response({"error": "Виконавця не знайдено"}, status=404)
 
         if artist.albums.exists():
+            logger.warning(
+                f"Artist not deleted: id={pk} has {artist.albums.count()} albums"
+            )
             return Response(
                 {"error": "Неможливо видалити виконавця, у нього є платівки"},
                 status=409,
             )
 
         artist.delete()
+        logger.info(f"Artist deleted: id={pk}")
         return Response(status=204)
 
 
@@ -99,12 +122,15 @@ class AlbumListView(APIView):
         responses=AlbumSerializer(many=True),
     )
     def get(self, request):
-        albums = Album.objects.all()
-
         search = request.query_params.get("search")
         artist_id = request.query_params.get("artist_id")
         genre_id = request.query_params.get("genre_id")
 
+        logger.debug(
+            f"Album list: search={repr(search)}, artist_id={artist_id}, genre_id={genre_id}"
+        )
+
+        albums = Album.objects.all()
         if search:
             albums = albums.filter(title__icontains=search)
         if artist_id:
@@ -141,8 +167,13 @@ class AlbumListView(APIView):
     def post(self, request):
         serializer = AlbumSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            album = serializer.save()
+            user_id = request.user.id if request.user.is_authenticated else None
+            logger.info(f"Album created: id={album.id}, user_id={user_id}")
             return Response(serializer.data, status=201)
+        logger.warning(
+            f"Album creation rejected: invalid fields {list(serializer.errors.keys())}"
+        )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -166,6 +197,7 @@ class AlbumDetailView(APIView):
         try:
             album = Album.objects.get(pk=pk)
         except Album.DoesNotExist:
+            logger.warning(f"Album not found: id={pk}")
             return Response({"error": "Платівку не знайдено"}, status=404)
 
         serializer = AlbumSerializer(album)
@@ -191,12 +223,17 @@ class AlbumDetailView(APIView):
         try:
             album = Album.objects.get(pk=pk)
         except Album.DoesNotExist:
+            logger.warning(f"Album not found for update: id={pk}")
             return Response({"error": "Платівку не знайдено"}, status=404)
 
         serializer = AlbumSerializer(album, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            logger.info(f"Album updated: id={pk}")
             return Response(serializer.data)
+        logger.warning(
+            f"Album update rejected: id={pk}, invalid fields {list(serializer.errors.keys())}"
+        )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
@@ -217,9 +254,11 @@ class AlbumDetailView(APIView):
         try:
             album = Album.objects.get(pk=pk)
         except Album.DoesNotExist:
+            logger.warning(f"Album not found for deletion: id={pk}")
             return Response({"error": "Платівку не знайдено"}, status=404)
 
         album.delete()
+        logger.info(f"Album deleted: id={pk}")
         return Response(status=204)
 
 
@@ -260,9 +299,13 @@ class WishlistView(APIView):
         try:
             album = Album.objects.get(pk=request.data.get("album"))
         except (Album.DoesNotExist, ValueError, TypeError):
+            logger.warning(
+                f"Wishlist add failed (album not found): album_id={request.data.get('album')}, user_id={request.user.id}"
+            )
             return Response({"error": "Платівку не знайдено"}, status=404)
 
         Wishlist.objects.get_or_create(user=request.user, album=album)
+        logger.info(f"Wishlist add: album_id={album.id}, user_id={request.user.id}")
         return Response(AlbumSerializer(album).data, status=201)
 
 
@@ -288,5 +331,10 @@ class WishlistDetailView(APIView):
     def delete(self, request, pk):
         deleted, _ = Wishlist.objects.filter(user=request.user, album_id=pk).delete()
         if deleted == 0:
+            logger.warning(
+                f"Wishlist remove failed (not in wishlist): album_id={pk}, user_id={request.user.id}"
+            )
             return Response({"error": "Платівки немає у списку бажаного"}, status=404)
+
+        logger.info(f"Wishlist remove: album_id={pk}, user_id={request.user.id}")
         return Response(status=204)
