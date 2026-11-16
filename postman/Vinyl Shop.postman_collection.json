@@ -1,0 +1,857 @@
+{
+  "info": {
+    "_postman_id": "d2929fc9-e44f-453d-abc4-8ef2b49f8793",
+    "name": "Vinyl Shop",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "59232347",
+    "_collection_link": "https://go.postman.co/collection/59232347-d2929fc9-e44f-453d-abc4-8ef2b49f8793?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"ana\",\"email\":\"ana@example.com\",\"password\":\"Ana2009!\",\"password2\":\"Ana2009!\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/register/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Register, invalid data",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"alex\",\"email\":\"alex@example.com\",\"password\":\"12345678alex\",\"password2\":\"123456789alex1\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/register/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const data = pm.response.json();\nif (data.access)  pm.collectionVariables.set(\"access_token\", data.access);\nif (data.refresh) pm.collectionVariables.set(\"refresh_token\", data.refresh);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"daria\",\"password\": \"Capybara2026!\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Refresh",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const data = pm.response.json();\nif (data.access)  pm.collectionVariables.set(\"access_token\", data.access);\nif (data.refresh) pm.collectionVariables.set(\"refresh_token\", data.refresh);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"refresh\": \"{{refresh_token}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/refresh/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "refresh",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create artist, no token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Test\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/artists/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create artist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Michael Jackson\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/artists/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List artists",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/artists/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "artists",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get artist",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/artists/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update artist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Michael J. Jackson\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/artists/1/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create genre",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Pop\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/genres/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "genres",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List genres",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/genres/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "genres",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create album",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Thriller\",\n    \"price\": \"899.00\",\n    \"in_stock\": true,\n    \"artist\": 1,\n    \"genre\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List albums",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get album",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/albums/4/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            "4",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update album",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"price\": \"799.00\", \"in_stock\": false}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/albums/4/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            "4",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create artist, empty data",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"New Artist Name\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/artists/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get artist, not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/artists/999/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            "999",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create album, invalid data",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\t{\"title\": \"No price\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create album, unknown artist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"X\", \"price\": \"10.00\", \"in_stock\": true, \"artist\": 999, \"genre\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/albums/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get album, not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/albums/4/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            "4",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete artist with albums",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/artists/2/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            "2",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete album",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/albums/2/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "albums",
+            "2",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete artist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/artists/2/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "artists",
+            "2",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Wishlist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/wishlist/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "wishlist",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add to Wishlist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"album\": 3\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/wishlist/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "wishlist",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Remove from Wishlist",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/wishlist/3/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "wishlist",
+            "3",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "json_web_token_0966",
+      "secret": true
+    }
+  ]
+}
