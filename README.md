@@ -40,7 +40,7 @@ Vinyl Shop - інтернет-магазин для любителів та по
 2. Згенерувати власний секретний ключ і вписати його в `SECRET_KEY`:
    ```bash
    python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-   ```<img width="1408" height="881" alt="Знімок екрана 2026-11-15 о 21 59 29" src="https://github.com/user-attachments/assets/7fa6be7d-1ee1-407d-a2c1-e4c910eb556e" />
+   ```
 ## Документація API
 
 Документація згенерована автоматично за допомогою `drf-spectacular` (OpenAPI 3).
